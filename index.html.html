@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأُسدَة في الأعمال</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+        }
+        main {
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        a {
+            color: white;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="https://guiaholambra.my.canva.site/home">الأُسدَة في الأعمال</a></h1>
+    </header>
+    <main>
+        <div class="container">
+            <h2>أدخل المعلومات المطلوبة</h2>
+            <label for="cumulativeHours">الساعات التراكمية:</label>
+            <input type="number" id="cumulativeHours" placeholder="أدخل الساعات التراكمية">
+
+            <label for="cumulativeGPA">المعدل التراكمي:</label>
+            <input type="number" step="0.01" id="cumulativeGPA" placeholder="أدخل المعدل التراكمي">
+
+            <div id="courseInputs">
+                <div class="course">
+                    <h3>المادة 1</h3>
+                    <label for="grade1">علامة المادة:</label>
+                    <select id="grade1">
+                        <option value="4.00">A</option>
+                        <option value="3.75">A-</option>
+                        <option value="3.50">B+</option>
+                        <option value="3.00">B</option>
+                        <option value="2.75">B-</option>
+                        <option value="2.50">C+</option>
+                        <option value="2.00">C</option>
+                        <option value="1.75">C-</option>
+                        <option value="1.50">D+</option>
+                        <option value="1.25">D</option>
+                        <option value="1.00">D-</option>
+                        <option value="0.50">F</option>
+                    </select>
+
+                    <label for="hours1">ساعات المادة:</label>
+                    <select id="hours1">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+
+                    <label for="retake1">هل المادة معادة؟</label>
+                    <select id="retake1" onchange="toggleRetakeGrade(1)">
+                        <option value="no">لا</option>
+                        <option value="yes">نعم</option>
+                    </select>
+
+                    <div id="retakeGrade1" style="display: none;">
+                        <label for="retakeGrade1">علامة المادة المعادة:</label>
+                        <select id="retakeGrade1">
+                            <option value="2.50">C+</option>
+                            <option value="2.00">C</option>
+                            <option value="1.75">C-</option>
+                            <option value="1.50">D+</option>
+                            <option value="1.25">D</option>
+                            <option value="1.00">D-</option>
+                            <option value="0.50">F</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="addCourse()">إضافة مادة جديدة</button>
+            <button onclick="calculateGPA()">احسب معدلك</button>
+            <div class="result" id="result"></div>
+        </div>
+    </main>
+
+    <script>
+        let courseCount = 1;
+
+        function addCourse() {
+            courseCount++;
+            const courseInputs = document.getElementById('courseInputs');
+            const newCourse = document.createElement('div');
+            newCourse.classList.add('course');
+            newCourse.innerHTML = `
+                <h3>المادة ${courseCount}</h3>
+                <label for="grade${courseCount}">علامة المادة:</label>
+                <select id="grade${courseCount}">
+                    <option value="4.00">A</option>
+                    <option value="3.75">A-</option>
+                    <option value="3.50">B+</option>
+                    <option value="3.00">B</option>
+                    <option value="2.75">B-</option>
+                    <option value="2.50">C+</option>
+                    <option value="2.00">C</option>
+                    <option value="1.75">C-</option>
+                    <option value="1.50">D+</option>
+                    <option value="1.25">D</option>
+                    <option value="1.00">D-</option>
+                    <option value="0.50">F</option>
+                </select>
+
+                <label for="hours${courseCount}">ساعات المادة:</label>
+                <select id="hours${courseCount}">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+
+                <label for="retake${courseCount}">هل المادة معادة؟</label>
+                <select id="retake${courseCount}" onchange="toggleRetakeGrade(${courseCount})">
+                    <option value="no">لا</option>
+                    <option value="yes">نعم</option>
+                </select>
+
+                <div id="retakeGrade${courseCount}" style="display: none;">
+                    <label for="retakeGrade${courseCount}">علامة المادة المعادة:</label>
+                    <select id="retakeGrade${courseCount}">
+                        <option value="2.50">C+</option>
+                        <option value="2.00">C</option>
+                        <option value="1.75">C-</option>
+                        <option value="1.50">D+</option>
+                        <option value="1.25">D</option>
+                        <option value="1.00">D-</option>
+                        <option value="0.50">F</option>
+                    </select>
+                </div>
+            `;
+            courseInputs.appendChild(newCourse);
+        }
+
+        function toggleRetakeGrade(courseNumber) {
+            const retakeGradeDiv = document.getElementById(`retakeGrade${courseNumber}`);
+            const retakeSelect = document.getElementById(`retake${courseNumber}`);
+            if (retakeSelect.value === 'yes') {
+                retakeGradeDiv.style.display = 'block';
+            } else {
+                retakeGradeDiv.style.display = 'none';
+            }
+        }
+
+        function calculateGPA() {
+            const cumulativeHoursInput = document.getElementById('cumulativeHours');
+            const cumulativeGPAInput = document.getElementById('cumulativeGPA');
+
+            // If the fields are empty, treat them as 0
+            const cumulativeHours = cumulativeHoursInput.value ? parseFloat(cumulativeHoursInput.value) : 0;
+            const cumulativeGPA = cumulativeGPAInput.value ? parseFloat(cumulativeGPAInput.value) : 0;
+
+            let totalPoints = 0;
+            let totalHours = 0;
+
+            for (let i = 1; i <= courseCount; i++) {
+                const gradeSelect = document.getElementById(`grade${i}`);
+                const hoursSelect = document.getElementById(`hours${i}`);
+                const retakeSelect = document.getElementById(`retake${i}`);
+
+                if (!gradeSelect || !hoursSelect || !retakeSelect) continue;
+
+                const grade = parseFloat(gradeSelect.value);
+                const hours = parseInt(hoursSelect.value);
+                const retake = retakeSelect.value;
+                let finalGrade = grade;
+
+                if (retake === 'yes') {
+                    const retakeGradeSelect = document.getElementById(`retakeGrade${i}`);
+                    if (retakeGradeSelect) {
+                        const retakeGrade = parseFloat(retakeGradeSelect.value);
+                        finalGrade = Math.max(grade, retakeGrade); // Choose the higher grade
+                    }
+                }
+
+                totalPoints += finalGrade * hours;
+                totalHours += hours;
+            }
+
+            const newTotalPoints = totalPoints + (cumulativeGPA * cumulativeHours);
+            const newTotalHours = totalHours + cumulativeHours;
+
+            if (newTotalHours === 0) {
+                alert("لا يمكن حساب المعدل بدون ساعات دراسية.");
+                return;
+            }
+
+            const newGPA = newTotalPoints / newTotalHours;
+
+            let resultText = `معدلك الجديد هو: ${newGPA.toFixed(2)}<br>`;
+            if (newGPA < 1.99) {
+                resultText += "التقدير: ضعيف";
+            } else if (newGPA >= 2.00 && newGPA <= 2.49) {
+                resultText += "التقدير: مقبول";
+            } else if (newGPA >= 2.50 && newGPA <= 2.99) {
+                resultText += "التقدير: جيد";
+            } else if (newGPA >= 3.00 && newGPA <= 3.64) {
+                resultText += "التقدير: جيد جدًا";
+            } else if (newGPA >= 3.65 && newGPA <= 4.00) {
+                resultText += "التقدير: امتياز";
+            }
+
+            document.getElementById('result').innerHTML = resultText;
+        }
+    </script>
+</body>
+</html>
